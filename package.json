@@ -1,0 +1,25 @@
+{
+  "name": "generator-cx-react",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrossroadsCX/yeoman-react-generator.git"
+  },
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CrossroadsCX/yeoman-react-generator/issues"
+  },
+  "homepage": "https://github.com/CrossroadsCX/yeoman-react-generator#readme",
+  "dependencies": {
+    "yeoman-generator": "^3.1.1"
+  }
+}
