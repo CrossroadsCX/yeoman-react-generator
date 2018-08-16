@@ -28,6 +28,7 @@ module.exports = class extends Generator {
     this.yarnInstall([
       'react',
       'redux',
+      'redux-form',
       'webpack',
     ]);
 
