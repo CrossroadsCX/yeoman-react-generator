@@ -29,6 +29,8 @@ module.exports = class extends Generator {
       'react',
       'redux',
       'redux-form',
+      'redux-saga',
+      'redux-devtools-extension',
       'webpack',
     ]);
 
@@ -36,8 +38,11 @@ module.exports = class extends Generator {
 
     if (this.answers.devDependencies) {
       this.yarnInstall([
+        'eslint-config-airbnb',
         'eslint-config-airbnb-base',
         'eslint-plugin-import',
+        'eslint-plugin-jsx-a11y',
+        'eslint-plugin-react',
         'webpack-dashboard',
       ], { dev: true });
     }
