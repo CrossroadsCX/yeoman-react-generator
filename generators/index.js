@@ -58,10 +58,10 @@ module.exports = class extends Generator {
     this.log(chalk.green('Writing template files...'));
 
     const name = this.answers.name.trim().toLowerCase().replace(' ', '-');
-    const description = this.answers.description;
+    const { description } = this.answers;
 
-    await this.fs.copyTpl(
-      this.templatePath('npm/package.json'),
+    this.fs.copyTpl(
+      this.templatePath('config/package.json'),
       this.destinationPath('package.json'),
       {
         name,
@@ -69,7 +69,12 @@ module.exports = class extends Generator {
       },
     );
 
-    this.fs.copyTpl(
+    this.fs.copy(
+      this.templatePath('config/_editorconfig'),
+      this.destinationPath('.editorconfig'),
+    );
+
+    this.fs.copy(
       this.templatePath('index.html'),
       this.destinationPath('public/index.html'),
     );
