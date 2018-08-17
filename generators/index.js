@@ -27,24 +27,26 @@ module.exports = class extends Generator {
 
     this.yarnInstall([
       'react',
+      'react-redux',
       'redux',
       'redux-form',
       'redux-saga',
       'redux-devtools-extension',
       'webpack',
-    ]);
+    ], { silent: true });
 
     this.log(chalk.yellow(JSON.stringify(this.answers)));
 
     if (this.answers.devDependencies) {
       this.yarnInstall([
+        'eslint',
         'eslint-config-airbnb',
         'eslint-config-airbnb-base',
         'eslint-plugin-import',
         'eslint-plugin-jsx-a11y',
         'eslint-plugin-react',
         'webpack-dashboard',
-      ], { dev: true });
+      ], { dev: true, silent: true });
     }
   }
 
@@ -53,6 +55,12 @@ module.exports = class extends Generator {
       this.templatePath('index.html'),
       this.destinationPath('public/index.html'),
       { title: 'Index templating' },
+    );
+
+    this.fs.copy(
+      this.templatePath('app'),
+      this.destinationPath('app'),
+      { title: 'Copying App directory' },
     );
   }
 };
