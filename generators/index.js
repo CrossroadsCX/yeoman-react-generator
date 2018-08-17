@@ -15,6 +15,12 @@ module.exports = class extends Generator {
       default: this.appname, // Default to current folder name
     },
     {
+      type: 'input',
+      name: 'description',
+      message: 'Project description',
+      default: '',
+    },
+    {
       type: 'confirm',
       name: 'devDependencies',
       message: 'Install dev dependencies?',
@@ -23,9 +29,9 @@ module.exports = class extends Generator {
   }
 
   async install() {
-    this.spawnCommandSync('npm', ['init', '-y']);
+    this.log(chalk.green('Installing...'));
 
-    this.yarnInstall([
+    await this.yarnInstall([
       'react',
       'react-redux',
       'redux',
@@ -35,10 +41,8 @@ module.exports = class extends Generator {
       'webpack',
     ], { silent: true });
 
-    this.log(chalk.yellow(JSON.stringify(this.answers)));
-
     if (this.answers.devDependencies) {
-      this.yarnInstall([
+      await this.yarnInstall([
         'eslint',
         'eslint-config-airbnb',
         'eslint-config-airbnb-base',
@@ -51,16 +55,28 @@ module.exports = class extends Generator {
   }
 
   async writing() {
+    this.log(chalk.green('Writing template files...'));
+
+    const name = this.answers.name.trim().toLowerCase().replace(' ', '-');
+    const description = this.answers.description;
+
+    await this.fs.copyTpl(
+      this.templatePath('npm/package.json'),
+      this.destinationPath('package.json'),
+      {
+        name,
+        description,
+      },
+    );
+
     this.fs.copyTpl(
       this.templatePath('index.html'),
       this.destinationPath('public/index.html'),
-      { title: 'Index templating' },
     );
 
     this.fs.copy(
       this.templatePath('app'),
       this.destinationPath('app'),
-      { title: 'Copying App directory' },
     );
   }
 };
