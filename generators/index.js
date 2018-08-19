@@ -43,12 +43,17 @@ module.exports = class extends Generator {
 
     if (this.answers.devDependencies) {
       await this.yarnInstall([
+        'babel',
+        'babel-core',
+        'babel-loader',
         'eslint',
         'eslint-config-airbnb',
         'eslint-config-airbnb-base',
+        'eslint-loader',
         'eslint-plugin-import',
         'eslint-plugin-jsx-a11y',
         'eslint-plugin-react',
+        'html-webpack-plugin',
         'webpack-dashboard',
       ], { dev: true, silent: true });
     }
