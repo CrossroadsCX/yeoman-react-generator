@@ -1,6 +1,10 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 
+const {
+  rootHelper,
+} = require('./helpers');
+
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
@@ -19,6 +23,12 @@ module.exports = class extends Generator {
       name: 'description',
       message: 'Project description',
       default: '',
+    },
+    {
+      type: 'input',
+      name: 'modules',
+      message: 'What modules do you want to start with ( comma separated )?',
+      default: ['auth'],
     },
     {
       type: 'confirm',
@@ -43,7 +53,7 @@ module.exports = class extends Generator {
 
     if (this.answers.devDependencies) {
       await this.yarnInstall([
-        'babel',
+        'babel-cli',
         'babel-core',
         'babel-loader',
         'eslint',
@@ -63,10 +73,11 @@ module.exports = class extends Generator {
     this.log(chalk.green('Writing template files...'));
 
     const name = this.answers.name.trim().toLowerCase().replace(' ', '-');
-    const { description } = this.answers;
+    const { description, modules } = this.answers;
+    const modulesArray = modules.split(',').map(module => module.trim());
 
     this.fs.copyTpl(
-      this.templatePath('config/package.json'),
+      this.templatePath('_config/package.json'),
       this.destinationPath('package.json'),
       {
         name,
@@ -75,18 +86,39 @@ module.exports = class extends Generator {
     );
 
     this.fs.copy(
-      this.templatePath('config/_editorconfig'),
+      this.templatePath('_config/editorconfig'),
       this.destinationPath('.editorconfig'),
     );
 
     this.fs.copy(
-      this.templatePath('index.html'),
+      this.templatePath('_index.html'),
       this.destinationPath('public/index.html'),
     );
 
-    this.fs.copy(
-      this.templatePath('app'),
+    await this.fs.copy(
+      this.templatePath('_app'),
       this.destinationPath('app'),
     );
+
+    const {
+      moduleReducerCombinationBlock,
+      moduleReducerImportBlock,
+    } = rootHelper.buildReducer(modulesArray);
+
+    this.fs.copyTpl(
+      this.templatePath('_root/_reducer.js'),
+      this.destinationPath('app/modules/root/reducer.js'),
+      {
+        moduleReducerCombinationBlock,
+        moduleReducerImportBlock,
+      },
+    );
+
+    modulesArray.forEach((module) => {
+      this.fs.copy(
+        this.templatePath('_module'),
+        this.destinationPath(`app/modules/${module}`),
+      );
+    });
   }
 };
