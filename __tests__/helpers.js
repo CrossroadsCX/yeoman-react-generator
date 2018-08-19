@@ -23,6 +23,6 @@ describe('Root Helper', () => {
       moduleReducerCombinationBlock,
     } = rootHelper.buildReducer(['auth', 'users']);
 
-    expect(moduleReducerCombinationBlock).toBe('auth,\nusers,\n');
+    expect(moduleReducerCombinationBlock).toBe('auth,\n  users,');
   });
 });

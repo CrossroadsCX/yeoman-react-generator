@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-<%= moduleReducerImportBlock %>
+<%- moduleReducerImportBlock %>
 
 export default combineReducers({
-  <%= moduleReducerCombinationBlock %>
+  <%- moduleReducerCombinationBlock %>
 });
