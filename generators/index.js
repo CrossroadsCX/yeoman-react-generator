@@ -107,12 +107,26 @@ module.exports = class extends Generator {
       moduleReducerImportBlock,
     } = rootHelper.buildReducer(modulesArray);
 
+    const {
+      moduleSagaCombinationBlock,
+      moduleSagaImportBlock,
+    } = rootHelper.buildSaga(modulesArray);
+
     this.fs.copyTpl(
       this.templatePath('_root/_reducer.js'),
       this.destinationPath('app/modules/root/reducer.js'),
       {
         moduleReducerCombinationBlock,
         moduleReducerImportBlock,
+      },
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('_root/_saga.js'),
+      this.destinationPath('app/modules/root/saga.js'),
+      {
+        moduleSagaCombinationBlock,
+        moduleSagaImportBlock,
       },
     );
 

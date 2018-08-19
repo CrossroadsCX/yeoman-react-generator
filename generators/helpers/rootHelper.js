@@ -15,6 +15,24 @@ const buildReducer = (modules) => {
   };
 };
 
+const buildSaga = (modules) => {
+  let moduleSagaCombinationBlock = '';
+  let moduleSagaImportBlock = '';
+
+  modules.forEach((module) => {
+    moduleSagaCombinationBlock += `    ${module}(),\n`;
+    moduleSagaImportBlock += `import ${module} from '../${module}/sagas';\n`;
+  });
+
+  moduleSagaCombinationBlock = moduleSagaCombinationBlock.replace(/\s+$/, '');
+
+  return {
+    moduleSagaCombinationBlock,
+    moduleSagaImportBlock,
+  };
+};
+
 module.exports = {
   buildReducer,
+  buildSaga,
 };
