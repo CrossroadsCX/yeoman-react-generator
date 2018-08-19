@@ -43,6 +43,8 @@ module.exports = class extends Generator {
 
     await this.yarnInstall([
       'react',
+      'react-dom',
+      'react-hot-loader',
       'react-redux',
       'redux',
       'redux-form',
