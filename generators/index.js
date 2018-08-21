@@ -78,6 +78,8 @@ module.exports = class extends Generator {
     const { description, modules } = this.answers;
     const modulesArray = modules.split(',').map(module => module.trim());
 
+    const dotConfigs = ['editorconfig', 'gitignore', 'dockerignore', 'babelrc'];
+
     this.fs.copyTpl(
       this.templatePath('_config/package.json'),
       this.destinationPath('package.json'),
@@ -87,9 +89,19 @@ module.exports = class extends Generator {
       },
     );
 
+    dotConfigs.map(dotConfig => this.fs.copy(
+      this.templatePath(`_config/${dotConfig}`),
+      this.destinationPath(`.${dotConfig}`),
+    ));
+
     this.fs.copy(
       this.templatePath('_config/editorconfig'),
       this.destinationPath('.editorconfig'),
+    );
+
+    this.fs.copy(
+      this.templatePath('_config/gitignore'),
+      this.destinationPath('.gitignore'),
     );
 
     this.fs.copy(
