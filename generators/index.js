@@ -44,6 +44,7 @@ module.exports = class extends Generator {
     await this.yarnInstall([
       'react',
       'react-dom',
+      'react-helmet',
       'react-hot-loader',
       'react-redux',
       'redux',
@@ -57,15 +58,21 @@ module.exports = class extends Generator {
       await this.yarnInstall([
         'babel-cli',
         'babel-core',
+        'babel-eslint',
         'babel-loader',
+        'babel-preset-env',
+        'babel-preset-flow',
+        'babel-preset-react',
         'eslint',
         'eslint-config-airbnb',
         'eslint-config-airbnb-base',
         'eslint-loader',
+        'eslint-plugin-flowtype',
         'eslint-plugin-import',
         'eslint-plugin-jsx-a11y',
         'eslint-plugin-react',
         'html-webpack-plugin',
+        'webpack-cli',
         'webpack-dashboard',
       ], { dev: true, silent: true });
     }
@@ -79,7 +86,13 @@ module.exports = class extends Generator {
 
     const modulesArray = modules.split(',').map(module => module.trim());
 
-    const dotConfigs = ['editorconfig', 'gitignore', 'dockerignore', 'babelrc'];
+    const dotConfigs = [
+      'babelrc',
+      'dockerignore',
+      'editorconfig',
+      'eslintrc.json',
+      'gitignore',
+    ];
 
     this.fs.copyTpl(
       this.templatePath('_config/package.json'),
@@ -96,13 +109,8 @@ module.exports = class extends Generator {
     ));
 
     this.fs.copy(
-      this.templatePath('_config/editorconfig'),
-      this.destinationPath('.editorconfig'),
-    );
-
-    this.fs.copy(
-      this.templatePath('_config/gitignore'),
-      this.destinationPath('.gitignore'),
+      this.templatePath('_tooling'),
+      this.destinationPath('tooling'),
     );
 
     this.fs.copy(

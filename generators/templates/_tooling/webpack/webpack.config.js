@@ -5,9 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {};
 PATHS.root = path.resolve(__dirname, '../..');
-PATHS.src = path.resolve(PATHS.root, 'src');
+PATHS.public = path.resolve(PATHS.root, 'public');
+PATHS.src = path.resolve(PATHS.root, 'app');
 PATHS.dist = path.resolve(PATHS.root, 'dist');
-PATHS.htmlTemplate = path.resolve(PATHS.src, 'index.html');
+PATHS.htmlTemplate = path.resolve(PATHS.public, 'index.html');
 
 module.exports = {
   entry: ['babel-polyfill', path.resolve(PATHS.src, 'main.jsx')],

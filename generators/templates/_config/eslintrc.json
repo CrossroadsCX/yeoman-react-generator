@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended"
+  ],
+  "parser": "babel-eslint",
+  "plugins": ["flowtype"],
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "jest": true,
+    "es6": true
+  },
+  "rules": {
+    "react/no-unused-prop-types": "off",
+    "react/require-default-props": "off",
+    "react/no-array-index-key": "off",
+    "react/prefer-stateless-function": "off",
+    "no-constant-condition": "off",
+    "no-underscore-dangle": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/prefer-default-export": "off",
+    "camelcase": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "tooling/webpack/webpack.config.js"
+      }
+    }
+  }
+}
