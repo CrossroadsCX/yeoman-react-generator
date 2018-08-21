@@ -28,7 +28,7 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'modules',
       message: 'What modules do you want to start with ( comma separated )?',
-      default: ['auth'],
+      default: 'auth',
     },
     {
       type: 'confirm',
@@ -76,6 +76,7 @@ module.exports = class extends Generator {
 
     const name = this.answers.name.trim().toLowerCase().replace(' ', '-');
     const { description, modules } = this.answers;
+
     const modulesArray = modules.split(',').map(module => module.trim());
 
     const dotConfigs = ['editorconfig', 'gitignore', 'dockerignore', 'babelrc'];
