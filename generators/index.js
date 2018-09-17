@@ -31,6 +31,13 @@ module.exports = class extends Generator {
       default: 'auth',
     },
     {
+      type: 'list',
+      name: 'deployment',
+      message: 'What service are you using for deployment?',
+      default: 'None',
+      choices: ['None', 'aws'],
+    },
+    {
       type: 'confirm',
       name: 'devDependencies',
       message: 'Install dev dependencies?',
@@ -82,7 +89,7 @@ module.exports = class extends Generator {
     this.log(chalk.green('Writing template files...'));
 
     const name = this.answers.name.trim().toLowerCase().replace(' ', '-');
-    const { description, modules } = this.answers;
+    const { deployment, description, modules } = this.answers;
 
     const modulesArray = modules.split(',').map(module => module.trim());
 
@@ -108,10 +115,17 @@ module.exports = class extends Generator {
       this.destinationPath(`.${dotConfig}`),
     ));
 
-    this.fs.copy(
+    await this.fs.copy(
       this.templatePath('_tooling'),
       this.destinationPath('tooling'),
     );
+
+    if (deployment === 'aws') {
+      this.fs.copy(
+        this.templatePath('_deploy/aws'),
+        this.destinationPath('tooling/deploy'),
+      );
+    }
 
     this.fs.copy(
       this.templatePath('_index.html'),
