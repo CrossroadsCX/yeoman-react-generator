@@ -78,5 +78,8 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    contentBase: PATHS.dist,
+    compress: true,
+    port:9000,
   },
 };

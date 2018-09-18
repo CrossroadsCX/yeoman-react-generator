@@ -82,6 +82,7 @@ module.exports = class extends Generator {
         'html-webpack-plugin',
         'webpack-cli',
         'webpack-dashboard',
+        'webpack-dev-server',
       ], { dev: true, silent: true });
     }
   }

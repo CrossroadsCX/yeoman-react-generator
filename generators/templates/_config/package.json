@@ -7,6 +7,7 @@
     "build": "webpack --mode production --config tooling/webpack/webpack.config.js",
     "build:dev": "webpack --mode development --config tooling/webpack/webpack.config.js",
     "lint": "eslint . --fix --ext .js,.jsx",
+    "start:dev": "webpack-dev-server --mode development --config tooling/webpack/webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
