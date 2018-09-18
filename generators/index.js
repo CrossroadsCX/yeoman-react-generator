@@ -63,13 +63,13 @@ module.exports = class extends Generator {
 
     if (this.answers.devDependencies) {
       await this.yarnInstall([
-        'babel-cli',
-        'babel-core',
+        '@babel/core',
+        '@babel/polyfill',
+        '@babel/preset-env',
+        '@babel/preset-flow',
+        '@babel/preset-react',
         'babel-eslint',
         'babel-loader',
-        'babel-preset-env',
-        'babel-preset-flow',
-        'babel-preset-react',
         'eslint',
         'eslint-config-airbnb',
         'eslint-config-airbnb-base',
@@ -77,6 +77,7 @@ module.exports = class extends Generator {
         'eslint-plugin-flowtype',
         'eslint-plugin-import',
         'eslint-plugin-jsx-a11y',
+        'eslint-plugin-prettier',
         'eslint-plugin-react',
         'html-webpack-plugin',
         'webpack-cli',
@@ -88,7 +89,7 @@ module.exports = class extends Generator {
   async writing() {
     this.log(chalk.green('Writing template files...'));
 
-    const name = this.answers.name.trim().toLowerCase().replace(' ', '-');
+    const name = this.answers.name.trim().toLowerCase().replace(/ /g, '-');
     const { deployment, description, modules } = this.answers;
 
     const modulesArray = modules.split(',').map(module => module.trim());
@@ -97,7 +98,7 @@ module.exports = class extends Generator {
       'babelrc',
       'dockerignore',
       'editorconfig',
-      'eslintrc.json',
+      'eslintrc.js',
       'gitignore',
     ];
 
@@ -122,8 +123,16 @@ module.exports = class extends Generator {
 
     if (deployment === 'aws') {
       this.fs.copy(
-        this.templatePath('_deploy/aws'),
-        this.destinationPath('tooling/deploy'),
+        this.templatePath('_deploy/aws/policies'),
+        this.destinationPath('tooling/deploy/policies'),
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('_deploy/aws/createBucket.sh'),
+        this.destinationPath('tooling/deploy/createBucket.sh'),
+        {
+          bucketName: name,
+        },
       );
     }
 
