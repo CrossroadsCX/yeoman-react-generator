@@ -28,7 +28,7 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'modules',
       message: 'What modules do you want to start with ( comma separated )?',
-      default: 'auth',
+      default: 'users',
     },
     {
       type: 'list',
@@ -54,10 +54,12 @@ module.exports = class extends Generator {
       'react-helmet',
       'react-hot-loader',
       'react-redux',
+      'react-router-dom',
       'redux',
       'redux-form',
       'redux-saga',
       'redux-devtools-extension',
+      'reselect',
       'webpack',
     ], { silent: true });
 
@@ -80,6 +82,7 @@ module.exports = class extends Generator {
         'eslint-plugin-prettier',
         'eslint-plugin-react',
         'html-webpack-plugin',
+        'prettier',
         'webpack-cli',
         'webpack-dashboard',
         'webpack-dev-server',
