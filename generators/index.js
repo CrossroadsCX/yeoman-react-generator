@@ -129,8 +129,8 @@ module.exports = class extends Generator {
       );
 
       this.fs.copyTpl(
-        this.templatePath('_deploy/aws/createBucket.sh'),
-        this.destinationPath('tooling/deploy/createBucket.sh'),
+        this.templatePath('_deploy/aws/setup.sh'),
+        this.destinationPath('tooling/deploy/setup.sh'),
         {
           bucketName: name,
         },
