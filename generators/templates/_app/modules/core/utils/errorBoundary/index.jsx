@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 
 type Props = {
@@ -17,18 +15,20 @@ const initialState = {
 };
 
 export function defaultErrorComponent(props: Props) {
+  const { _error } = props;
+
   return (
     <div>
       <h1>An error has occurred.</h1>
-      <p>{ props._error }</p>
+      <p>{ _error }</p>
     </div>
   );
 }
 
 export default function errorBoundary (
-  ErrorComponent: $React$Component<any> = defaultErrorComponent
+  ErrorComponent
 ) {
-  return (Component: $React$Component<any>) =>
+  return (Component) =>
     class ErrorBoundary extends React.Component {
       constructor(props: Props) {
         super(props);
@@ -47,12 +47,17 @@ export default function errorBoundary (
       }
 
       render() {
+        const {
+          error,
+          info,
+        } = this.state;
+
         const propsToPass = { ...this.props };
-        if (this.state.info) {
-          propsToPass._info = this.state.info;
+        if (info) {
+          propsToPass._info = info;
         }
-        if (this.state.error) {
-          propsToPass._error = this.state.error;
+        if (error) {
+          propsToPass._error = error;
           return <ErrorComponent {...propsToPass} />;
         }
         return <Component {...propsToPass} />;

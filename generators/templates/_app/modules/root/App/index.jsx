@@ -14,7 +14,7 @@ import helmetConfig from '../helmetConfig';
 function App() {
   return (
     <div>
-      <Helmet title="App Title" meta={helmetConfig.meta}/>
+      <Helmet title="App Title" meta={helmetConfig.meta} />
       <Router />
     </div>
   );
@@ -26,12 +26,17 @@ type Props = {
 };
 
 function AppErrorComponent(props: Props) {
+  const {
+    _error,
+    _info,
+  } = props;
+
   return (
     <div>
       <h1>An error has occurred.</h1>
       <i>¯\_(ツ)_/¯</i>
-      <i>{ props._info }</i>
-      <strong>{ props._error }</strong>
+      <i>{ _info }</i>
+      <strong>{ _error }</strong>
     </div>
   );
 }
