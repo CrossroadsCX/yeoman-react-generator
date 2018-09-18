@@ -9,40 +9,53 @@ module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
     this.log(chalk.green('Initializing...'));
+    this.option('quiet');
+
+    this.quiet = this.options.quiet;
   }
 
   async prompting() {
-    this.answers = await this.prompt([{
-      type: 'input',
-      name: 'name',
-      message: 'Project name',
-      default: this.appname, // Default to current folder name
-    },
-    {
-      type: 'input',
-      name: 'description',
-      message: 'Project description',
-      default: '',
-    },
-    {
-      type: 'input',
-      name: 'modules',
-      message: 'What modules do you want to start with ( comma separated )?',
-      default: 'users',
-    },
-    {
-      type: 'list',
-      name: 'deployment',
-      message: 'What service are you using for deployment?',
-      default: 'None',
-      choices: ['None', 'aws'],
-    },
-    {
-      type: 'confirm',
-      name: 'devDependencies',
-      message: 'Install dev dependencies?',
-      default: true,
-    }]);
+    if (this.quiet) {
+      this.answers = {
+        name: 'cx-react-project',
+        description: 'New React Project',
+        modules: 'users',
+        deployment: 'None',
+        devDependencies: true,
+      };
+    } else {
+      this.answers = await this.prompt([{
+        type: 'input',
+        name: 'name',
+        message: 'Project name',
+        default: this.appname, // Default to current folder name
+      },
+      {
+        type: 'input',
+        name: 'description',
+        message: 'Project description',
+        default: '',
+      },
+      {
+        type: 'input',
+        name: 'modules',
+        message: 'What modules do you want to start with ( comma separated )?',
+        default: 'users',
+      },
+      {
+        type: 'list',
+        name: 'deployment',
+        message: 'What service are you using for deployment?',
+        default: 'None',
+        choices: ['None', 'aws'],
+      },
+      {
+        type: 'confirm',
+        name: 'devDependencies',
+        message: 'Install dev dependencies?',
+        default: true,
+      }]);
+    }
   }
 
   async install() {
@@ -107,14 +120,25 @@ module.exports = class extends Generator {
       'gitignore',
     ];
 
-    this.fs.copyTpl(
-      this.templatePath('_config/package.json'),
-      this.destinationPath('package.json'),
-      {
-        name,
-        description,
-      },
-    );
+    if (deployment === 'aws') {
+      this.fs.copyTpl(
+        this.templatePath('_config/package.aws.json'),
+        this.destinationPath('package.json'),
+        {
+          name,
+          description,
+        },
+      );
+    } else {
+      this.fs.copyTpl(
+        this.templatePath('_config/package.json'),
+        this.destinationPath('package.json'),
+        {
+          name,
+          description,
+        },
+      );
+    }
 
     dotConfigs.map(dotConfig => this.fs.copy(
       this.templatePath(`_config/${dotConfig}`),
