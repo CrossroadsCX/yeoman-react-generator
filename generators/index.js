@@ -99,6 +99,7 @@ module.exports = class extends Generator {
       'dockerignore',
       'editorconfig',
       'eslintrc.js',
+      'eslintignore',
       'gitignore',
     ];
 
