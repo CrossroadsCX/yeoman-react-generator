@@ -11,7 +11,7 @@ PATHS.dist = path.resolve(PATHS.root, 'dist');
 PATHS.htmlTemplate = path.resolve(PATHS.public, 'index.html');
 
 module.exports = {
-  entry: ['babel-polyfill', path.resolve(PATHS.src, 'main.jsx')],
+  entry: ['@babel/polyfill', path.resolve(PATHS.src, 'main.jsx')],
   output: {
     path: PATHS.dist,
     filename: 'app.bundle.js',

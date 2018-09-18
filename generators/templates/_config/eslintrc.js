@@ -18,4 +18,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
   ],
+  rules: {
+    'import/prefer-default-export': 0,
+  },
 };

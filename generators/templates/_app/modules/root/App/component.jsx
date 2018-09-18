@@ -1,24 +1,24 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import { Banner } from 'modules/banner';
-import errorBoundary from 'modules/core/utils/errorBoundary';
-import { Navbar } from 'modules/navbar';
-import { DEFAULT_TAB_TITLE } from 'modules/router/constants';
+import errorBoundary from '../../core/utils/errorBoundary';
+import { DEFAULT_TAB_TITLE } from '../../core/constants';
 
-import helmConfig from '../helmConfig';
+import helmetConfig from '../helmetConfig';
 
-import StagingWarning from '../StagingWarning';
 import styles from './styles.css';
 
-function App(props) {
+type Props = {
+  children: Array<any>,
+};
+
+function App(props: Props) {
+  const { children } = props;
+
   return (
     <div className={styles.app}>
-      <Helmet title={DEFAULT_TAB_TITLE} meta={helmConfig.meta} link={helmConfig.link} />
-      <StagingWarning />
-      <Navbar />
-      <Banner />
-      <div className={styles.appContent}>{props.children}</div>
+      <Helmet title={DEFAULT_TAB_TITLE} meta={helmetConfig.meta} link={helmetConfig.link} />
+      <div className={styles.appContent}>{children}</div>
     </div>
   );
 }

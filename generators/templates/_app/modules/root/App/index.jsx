@@ -7,10 +7,6 @@ import Router from '../../router';
 import errorBoundary from '../../core/utils/errorBoundary';
 import helmetConfig from '../helmetConfig';
 
-// import styles from './styles.css';
-
-
-
 function App() {
   return (
     <div>
