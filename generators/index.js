@@ -185,5 +185,10 @@ module.exports = class extends Generator {
         this.destinationPath(`app/modules/${module}`),
       );
     });
+
+    this.fs.copy(
+      this.templatePath('_app/modules/auth'),
+      this.destinationPath('app/modules/auth'),
+    );
   }
 };
