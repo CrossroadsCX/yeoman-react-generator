@@ -74,6 +74,9 @@ module.exports = {
     new DashboardPlugin(),
   ],
   resolve: {
+    alias: {
+      modules: path.resolve(PATHS.src, 'modules'),
+    },
     extensions: ['.js', '.jsx'],
   },
   devServer: {

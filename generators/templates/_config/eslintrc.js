@@ -22,4 +22,11 @@ module.exports = {
     'import/prefer-default-export': 0,
     semi: ['error', 'never'],
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['app'],
+      },
+    },
+  },
 };
