@@ -44,6 +44,13 @@ module.exports = class extends Generator {
       },
       {
         type: 'list',
+        name: 'ui',
+        message: 'Are you using a ui framework?',
+        default: 'None',
+        choices: ['None', 'material-ui'],
+      },
+      {
+        type: 'list',
         name: 'deployment',
         message: 'What service are you using for deployment?',
         default: 'None',
@@ -61,7 +68,7 @@ module.exports = class extends Generator {
   async install() {
     this.log(chalk.green('Installing...'));
 
-    await this.yarnInstall([
+    const dependencies = [
       'react',
       'react-dom',
       'react-helmet',
@@ -74,7 +81,13 @@ module.exports = class extends Generator {
       'redux-devtools-extension',
       'reselect',
       'webpack',
-    ], { silent: true });
+    ];
+
+    if (this.answers.ui === 'material-ui') {
+      dependencies.push('@material-ui/core');
+    }
+
+    await this.yarnInstall(dependencies, { silent: true });
 
     if (this.answers.devDependencies) {
       await this.yarnInstall([
@@ -107,7 +120,7 @@ module.exports = class extends Generator {
     this.log(chalk.green('Writing template files...'));
 
     const name = this.answers.name.trim().toLowerCase().replace(/ /g, '-');
-    const { deployment, description, modules } = this.answers;
+    const { deployment, description, modules, ui } = this.answers;
 
     const modulesArray = modules.split(',').map(module => module.trim());
 
