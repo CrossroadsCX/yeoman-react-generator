@@ -20,5 +20,6 @@ module.exports = {
   ],
   rules: {
     'import/prefer-default-export': 0,
+    semi: ['error', 'never'],
   },
 };
