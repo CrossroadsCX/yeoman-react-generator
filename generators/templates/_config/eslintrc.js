@@ -20,6 +20,8 @@ module.exports = {
   ],
   rules: {
     'import/prefer-default-export': 0,
+    'no-console': 'warn',
+    'no-unused-vars': 'warn',
     semi: ['error', 'never'],
   },
   settings: {
