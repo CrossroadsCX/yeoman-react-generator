@@ -1,17 +1,17 @@
-const Generator = require('yeoman-generator');
-const chalk = require('chalk');
+const Generator = require('yeoman-generator')
+const chalk = require('chalk')
 
 const {
   rootHelper,
-} = require('./helpers');
+} = require('./helpers')
 
 module.exports = class extends Generator {
   constructor(args, opts) {
-    super(args, opts);
-    this.log(chalk.green('Initializing...'));
-    this.option('quiet');
+    super(args, opts)
+    this.log(chalk.green('Initializing...'))
+    this.option('quiet')
 
-    this.quiet = this.options.quiet;
+    this.quiet = this.options.quiet
   }
 
   async prompting() {
@@ -22,7 +22,7 @@ module.exports = class extends Generator {
         modules: 'users',
         deployment: 'None',
         devDependencies: true,
-      };
+      }
     } else {
       this.answers = await this.prompt([{
         type: 'input',
@@ -61,12 +61,12 @@ module.exports = class extends Generator {
         name: 'devDependencies',
         message: 'Install dev dependencies?',
         default: true,
-      }]);
+      }])
     }
   }
 
   async install() {
-    this.log(chalk.green('Installing...'));
+    this.log(chalk.green('Installing...'))
 
     const dependencies = [
       'react',
@@ -81,13 +81,13 @@ module.exports = class extends Generator {
       'redux-devtools-extension',
       'reselect',
       'webpack',
-    ];
+    ]
 
     if (this.answers.ui === 'material-ui') {
-      dependencies.push('@material-ui/core');
+      dependencies.push('@material-ui/core')
     }
 
-    await this.yarnInstall(dependencies, { silent: true });
+    await this.yarnInstall(dependencies, { silent: true })
 
     if (this.answers.devDependencies) {
       await this.yarnInstall([
@@ -112,30 +112,32 @@ module.exports = class extends Generator {
         'node-sass',
         'prettier',
         'sass-loader',
+        'serve',
         'style-loader',
         'webpack-cli',
         'webpack-dashboard',
         'webpack-dev-server',
-      ], { dev: true, silent: true });
+      ], { dev: true, silent: true })
     }
   }
 
   async writing() {
-    this.log(chalk.green('Writing template files...'));
+    this.log(chalk.green('Writing template files...'))
 
-    const name = this.answers.name.trim().toLowerCase().replace(/ /g, '-');
-    const { deployment, description, modules, ui } = this.answers;
+    const name = this.answers.name.trim().toLowerCase().replace(/ /g, '-')
+    const {
+      deployment, description, modules, ui,
+    } = this.answers
 
-    const modulesArray = modules.split(',').map(module => module.trim());
+    const modulesArray = modules.split(',').map(module => module.trim())
 
     const dotConfigs = [
-      'babelrc',
       'dockerignore',
       'editorconfig',
       'eslintrc.js',
       'eslintignore',
       'gitignore',
-    ];
+    ]
 
     if (deployment === 'aws') {
       this.fs.copyTpl(
@@ -145,7 +147,7 @@ module.exports = class extends Generator {
           name,
           description,
         },
-      );
+      )
     } else {
       this.fs.copyTpl(
         this.templatePath('_config/package.json'),
@@ -154,24 +156,29 @@ module.exports = class extends Generator {
           name,
           description,
         },
-      );
+      )
     }
+
+    this.fs.copy(
+      this.templatePath('_config/babel.config.js'),
+      this.destinationPath('babel.config.js'),
+    )
 
     dotConfigs.map(dotConfig => this.fs.copy(
       this.templatePath(`_config/${dotConfig}`),
       this.destinationPath(`.${dotConfig}`),
-    ));
+    ))
 
     await this.fs.copy(
       this.templatePath('_tooling'),
       this.destinationPath('tooling'),
-    );
+    )
 
     if (deployment === 'aws') {
       this.fs.copy(
         this.templatePath('_deploy/aws/policies'),
         this.destinationPath('tooling/deploy/policies'),
-      );
+      )
 
       this.fs.copyTpl(
         this.templatePath('_deploy/aws/setup.sh'),
@@ -179,28 +186,28 @@ module.exports = class extends Generator {
         {
           bucketName: name,
         },
-      );
+      )
     }
 
     this.fs.copy(
       this.templatePath('_index.html'),
       this.destinationPath('public/index.html'),
-    );
+    )
 
     await this.fs.copy(
       this.templatePath('_app'),
       this.destinationPath('app'),
-    );
+    )
 
     const {
       moduleReducerCombinationBlock,
       moduleReducerImportBlock,
-    } = rootHelper.buildReducer(modulesArray);
+    } = rootHelper.buildReducer(modulesArray)
 
     const {
       moduleSagaCombinationBlock,
       moduleSagaImportBlock,
-    } = rootHelper.buildSaga(modulesArray);
+    } = rootHelper.buildSaga(modulesArray)
 
     this.fs.copyTpl(
       this.templatePath('_root/_reducer.js'),
@@ -209,7 +216,7 @@ module.exports = class extends Generator {
         moduleReducerCombinationBlock,
         moduleReducerImportBlock,
       },
-    );
+    )
 
     this.fs.copyTpl(
       this.templatePath('_root/_saga.js'),
@@ -218,18 +225,18 @@ module.exports = class extends Generator {
         moduleSagaCombinationBlock,
         moduleSagaImportBlock,
       },
-    );
+    )
 
     modulesArray.forEach((module) => {
       this.fs.copy(
         this.templatePath('_module'),
         this.destinationPath(`app/modules/${module}`),
-      );
-    });
+      )
+    })
 
     this.fs.copy(
       this.templatePath('_app/modules/auth'),
       this.destinationPath('app/modules/auth'),
-    );
+    )
   }
-};
+}
