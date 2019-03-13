@@ -50,6 +50,13 @@ module.exports = class extends Generator {
         choices: ['None', 'material-ui'],
       },
       {
+        when: response => response.ui === 'material-ui',
+        name: 'includeLogin',
+        message: 'Would you like to include a Material login form?',
+        type: 'confirm',
+        default: false,
+      },
+      {
         type: 'list',
         name: 'deployment',
         message: 'What service are you using for deployment?',
@@ -234,9 +241,16 @@ module.exports = class extends Generator {
       )
     })
 
-    this.fs.copy(
+    await this.fs.copy(
       this.templatePath('_app/modules/auth'),
       this.destinationPath('app/modules/auth'),
     )
+
+    if (this.answers.includeLogin) {
+      await this.fs.copy(
+        this.templatePath('_components/Login'),
+        this.destinationPath('app/modules/auth/components/Login'),
+      )
+    }
   }
 }
